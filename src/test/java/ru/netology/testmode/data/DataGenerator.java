@@ -6,7 +6,6 @@ import io.restassured.filter.log.LogDetail;
 import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
 import lombok.Value;
-import lombok.val;
 
 import java.util.Locale;
 
@@ -20,13 +19,13 @@ public class DataGenerator {
             .setContentType(ContentType.JSON)
             .log(LogDetail.ALL)
             .build();
+
     private static final Faker faker = new Faker(new Locale("en"));
 
     private DataGenerator() {
     }
 
     private static void sendRequest(RegistrationDto user) {
-
         given()
                 .spec(requestSpec)
                 .body(user)
@@ -34,19 +33,14 @@ public class DataGenerator {
                 .post("/api/system/users")
                 .then()
                 .statusCode(200);
-
     }
 
     public static String getRandomLogin() {
-
-        String login = faker.name().username();
-        return login;
+        return faker.name().username();
     }
 
     public static String getRandomPassword() {
-
-        String password = faker.internet().password();
-        return password;
+        return faker.internet().password();
     }
 
     public static class Registration {
@@ -54,13 +48,10 @@ public class DataGenerator {
         }
 
         public static RegistrationDto getUser(String status) {
-
-            RegistrationDto user = new RegistrationDto(getRandomLogin(), getRandomPassword(), status);
-            return user;
+            return new RegistrationDto(getRandomLogin(), getRandomPassword(), status);
         }
 
         public static RegistrationDto getRegisteredUser(String status) {
-
             RegistrationDto registeredUser = getUser(status);
             sendRequest(registeredUser);
             return registeredUser;
